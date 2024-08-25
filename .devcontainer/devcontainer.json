@@ -1,0 +1,13 @@
+{
+    "dockerComposeFile": ["docker-compose.yml"],
+    "service": "rust_devcontainer",
+    "workspaceFolder": "/workspace",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "Codeium.codeium",
+                "1YiB.rust-bundle"
+            ]
+        }
+    },
+}
