@@ -7,6 +7,8 @@ mod controllers {
     pub use tweets::tweets;
 }
 
+mod database;
+
 mod views {
     mod home;
 

@@ -1,21 +1,19 @@
-use axum::{response::IntoResponse, Router, routing, Json};
+use axum::{extract::State, response::IntoResponse, Router, routing, Json};
 
 use crate::controllers::tweets;
-use crate::views::{Home, Tweet};
+use crate::database;
+use crate::repos_impl::TweetsImpl;
+use crate::services::list_tweets;
 
-pub fn app() -> Router {
-    Router::new().route("/", routing::get(get)).nest("/tweets", tweets::tweets())
+pub async fn app() -> Router {
+    let repos = database::resolve_repositories().await;
+    Router::new().
+        route("/", routing::get(get))
+        .with_state(repos.clone())
+        .nest("/tweets", tweets(repos.clone()))
 }
 
-async fn get() -> impl IntoResponse {
-    let tweets = (1..=20)
-        .into_iter()
-        .map(|_| Tweet {
-            name: "太郎".to_string(),
-            message: "こんにちは！".to_string(),
-            posted_at: "2020-01-01 12:34".to_string(),
-        })
-        .collect();
-    let home = Home { tweets };
+async fn get(State(tweets_repo): State<TweetsImpl>) -> impl IntoResponse {
+    let home = list_tweets(&tweets_repo).await;
     Json(home)
 }

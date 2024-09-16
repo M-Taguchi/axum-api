@@ -6,7 +6,8 @@
         "vscode": {
             "extensions": [
                 "Codeium.codeium",
-                "1YiB.rust-bundle"
+                "1YiB.rust-bundle",
+                "cweijan.vscode-database-client2"
             ]
         }
     },

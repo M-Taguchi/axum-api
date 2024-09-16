@@ -1,10 +1,12 @@
 use axum::{extract::Form, response::IntoResponse, Router, routing, Json};
 use serde::Deserialize;
 
+use crate::database::Repositories;
 use crate::views::{Home, Tweet};
 
-pub fn tweets() -> Router {
+pub fn tweets(repos: Repositories) -> Router {
     Router::new().route("/new", routing::post(post))
+    .with_state(repos)
 }
 
 async fn post(form: Form<TweetForm>) -> impl IntoResponse {
